@@ -44,6 +44,12 @@ def update_weights(b, m, points, alpha, loss_function):
     Update weights based on one iteration through the data based on the gradient
     of b and m
 
+    Params:
+    b -- y-intercept of the line
+    m -- slope of the line
+    points -- points to calculate gradient on
+    alpha -- learning rate; how big of a step to take at each iteration
+    loss_function -- which loss function to perform gradient descent on
     """
     if loss_function == "mean_squared_error":
         b_gradient = 0
@@ -62,7 +68,7 @@ def update_weights(b, m, points, alpha, loss_function):
         raise ValueError("Loss function unrecognized")
 
 
-def gradient_descent(points, b, m, alpha, epoch, loss_function="mean_squared_error"):
+def gradient_descent(points, b, m, alpha, epoch, loss_function):
     """
     Update the weights for epoch iterations in order to get to the lowest
     loss.
@@ -71,8 +77,9 @@ def gradient_descent(points, b, m, alpha, epoch, loss_function="mean_squared_err
     points -- list of points
     b -- current y-intercept of the line
     m -- current slope of the line
-    alpha -- how big of a step to take (default=0.0001)
-    epoch -- number of iterations through the data points (default=1000)
+    alpha -- how big of a step to take
+    epoch -- number of iterations through the data points
+    loss_function -- which loss function to perform gradient descent on
     """
     for _ in range(epoch):
         b, m = update_weights(b, m, points, alpha, loss_function)
@@ -88,9 +95,20 @@ def run():
         "data.csv", delimiter=","
     )  # x is the amount of hours studied and y is the test score
 
+    # Normalize points
+    x = [x[0] for x in points]
+    y = [y[1] for y in points]
+    range_x = max(x) - min(x)
+    x_min = min(x)
+    range_y = max(y) - min(y)
+    y_min = min(y)
+    for point in points:
+        point[0] = (point[0] - x_min) / range_x
+        point[1] = (point[1] - y_min) / range_y
+
     # Define hyperparameters
-    alpha = 0.0001  # Learning rate
-    num_epoch = 1000  # Number of iterations through the whole
+    alpha = 0.001  # Learning rate
+    num_epoch = 100000  # Number of iterations through the whole
     loss_function = "mean_squared_error"
 
     # Initialize weights
