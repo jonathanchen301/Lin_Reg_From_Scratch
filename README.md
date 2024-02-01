@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The goal of this project is to learn to implement a basic linear regression without
+The goal of this project is to learn to implement a basic linear regression without the
 usage of libraries.
 
 ## Approach
